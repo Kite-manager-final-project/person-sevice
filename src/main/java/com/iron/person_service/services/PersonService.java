@@ -1,5 +1,6 @@
 package com.iron.person_service.services;
 
+import com.iron.person_service.dtos.PersonDTO;
 import com.iron.person_service.dtos.UpdateEmailPersonDTO;
 import com.iron.person_service.dtos.UpdatePhoneNumberPersonDTO;
 import com.iron.person_service.exceptions.PersonExistException;
@@ -66,7 +67,7 @@ public class PersonService {
 
     //PUT
 
-    public ResponseEntity<?> updatePerson(String nickName, Person person){
+    public ResponseEntity<?> updatePerson(String nickName, PersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
         if (foundPerson.isEmpty())
