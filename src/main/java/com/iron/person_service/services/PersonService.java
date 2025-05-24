@@ -25,14 +25,9 @@ public class PersonService {
 
     //GET
 
-    public ResponseEntity<?> getPersonByNickName(String nickName){
-        Optional<Person> foundPerson = personRepository.findById(nickName);
-
-        if (foundPerson.isEmpty())
-            throw new PersonNotFoundException("Esa persona no existe en la base de datos");
-
-        return new ResponseEntity<>(foundPerson.get(), HttpStatus.OK);
-
+    public Person getPersonByNickName(String nickName) {
+        return personRepository.findById(nickName)
+                .orElseThrow(() -> new PersonNotFoundException("Esa persona no existe en la base de datos"));
     }
 
     public List<Person> getAllPersons(){
@@ -42,15 +37,14 @@ public class PersonService {
     //POST
 
 
-    public ResponseEntity<?> savePerson(Person person){
+    public Person savePerson(Person person){
         Optional<Person> foundPerson = personRepository.findById(person.getNickName());
 
         if (foundPerson.isPresent())
             throw new PersonExistException("Ese usuario ya existe en la base de datos");
 
-        Person savedPerson = personRepository.save(person);
+        return personRepository.save(person);
 
-        return new ResponseEntity<>(savedPerson, HttpStatus.OK);
     }
 
     //DELETE
@@ -67,7 +61,7 @@ public class PersonService {
 
     //PUT
 
-    public ResponseEntity<?> updatePerson(String nickName, PersonDTO person){
+    public Person updatePerson(String nickName, PersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
         if (foundPerson.isEmpty())
@@ -79,15 +73,13 @@ public class PersonService {
         personToUpdate.setName(person.getName());
         personToUpdate.setPhoneNumber(person.getPhoneNumber());
 
-        Person updatedPerson = personRepository.save(personToUpdate);
-
-        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
+        return personRepository.save(personToUpdate);
 
     }
 
     //PATCH
 
-    public ResponseEntity<?> updateEmailPerson(String nickName, UpdateEmailPersonDTO person){
+    public Person updateEmailPerson(String nickName, UpdateEmailPersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
         if (foundPerson.isEmpty())
@@ -97,12 +89,10 @@ public class PersonService {
 
         personToUpdate.setEmail(person.getEmail());
 
-        Person updatedPerson = personRepository.save(personToUpdate);
-
-        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
+        return personRepository.save(personToUpdate);
     }
 
-    public ResponseEntity<?> updatePhoneNumberPerson(String nickName, UpdatePhoneNumberPersonDTO person){
+    public Person updatePhoneNumberPerson(String nickName, UpdatePhoneNumberPersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
         if (foundPerson.isEmpty())
@@ -112,8 +102,7 @@ public class PersonService {
 
         personToUpdate.setPhoneNumber(person.getPhoneNumber());
 
-        Person updatedPerson = personRepository.save(personToUpdate);
+        return personRepository.save(personToUpdate);
 
-        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
     }
 }
