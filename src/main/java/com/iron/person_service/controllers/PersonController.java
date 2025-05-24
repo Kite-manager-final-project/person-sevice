@@ -1,5 +1,6 @@
 package com.iron.person_service.controllers;
 
+import com.iron.person_service.dtos.PersonDTO;
 import com.iron.person_service.dtos.UpdateEmailPersonDTO;
 import com.iron.person_service.dtos.UpdatePhoneNumberPersonDTO;
 import com.iron.person_service.exceptions.PersonExistException;
@@ -55,7 +56,7 @@ public class PersonController {
     //PUT
 
     @PutMapping("/{nickName}")
-    public ResponseEntity<?> updatePerson(@PathVariable String nickName, @Valid @RequestBody Person person){
+    public ResponseEntity<?> updatePerson(@PathVariable String nickName, @Valid @RequestBody PersonDTO person){
         try {
             return ResponseEntity.ok(personService.updatePerson(nickName, person));
         }catch (PersonNotFoundException e){
