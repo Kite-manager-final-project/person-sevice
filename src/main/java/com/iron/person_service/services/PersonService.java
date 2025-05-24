@@ -78,9 +78,9 @@ public class PersonService {
         personToUpdate.setName(person.getName());
         personToUpdate.setPhoneNumber(person.getPhoneNumber());
 
-        Person savedPerson = personRepository.save(personToUpdate);
+        Person updatedPerson = personRepository.save(personToUpdate);
 
-        return new ResponseEntity<>(savedPerson, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
 
     }
 
@@ -96,9 +96,9 @@ public class PersonService {
 
         personToUpdate.setEmail(person.getEmail());
 
-        Person savedPerson = personRepository.save(personToUpdate);
+        Person updatedPerson = personRepository.save(personToUpdate);
 
-        return new ResponseEntity<>(savedPerson, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updatePhoneNumberPerson(String nickName, UpdatePhoneNumberPersonDTO person){
@@ -111,8 +111,8 @@ public class PersonService {
 
         personToUpdate.setPhoneNumber(person.getPhoneNumber());
 
-        Person savedPerson = personRepository.save(personToUpdate);
+        Person updatedPerson = personRepository.save(personToUpdate);
 
-        return new ResponseEntity<>(savedPerson, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
     }
 }
