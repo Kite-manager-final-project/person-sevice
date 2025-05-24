@@ -28,7 +28,7 @@ public class Person {
     private String name;
 
 
-    @Digits(integer = 10, fraction = 0, message = "El número de teléfono debe tener 10 dígitos")
+    @Digits(integer = 9, fraction = 0, message = "El número de teléfono debe tener 9 dígitos")
     @NonNull
     private int phoneNumber;
 
