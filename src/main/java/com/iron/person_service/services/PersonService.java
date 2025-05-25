@@ -25,18 +25,32 @@ public class PersonService {
 
     //GET
 
+    /**
+     * Busca una persona por nickName
+     * @param nickName el nickName de la persona a buscar
+     * @return la persona encontrada con ese nickName
+     * @throws PersonNotFoundException Si no existe ninguna persona con ese nickname
+     */
     public Person getPersonByNickName(String nickName) {
         return personRepository.findById(nickName)
                 .orElseThrow(() -> new PersonNotFoundException("Esa persona no existe en la base de datos"));
     }
 
+    /**
+     * @return Todas las personas en la base de datos
+     */
     public List<Person> getAllPersons(){
         return personRepository.findAll();
     }
 
     //POST
 
-
+    /**
+     * Guarda una persona en la base de datos
+     * @param person la persona a guardar
+     * @return la persona que ha mandado el cliente
+     * @throws PersonExistException si el cliente manda una persona con un nickName ya existente
+     */
     public Person savePerson(Person person){
         Optional<Person> foundPerson = personRepository.findById(person.getNickName());
 
@@ -49,6 +63,11 @@ public class PersonService {
 
     //DELETE
 
+    /**
+     * Elimina una persona
+     * @param nickName el nickName de la persona a eliminar
+     * @throws PersonNotFoundException si el cliente manda un nickName no existente
+     */
     public void deletePerson(String nickName){
 
         Optional<Person> personToDelete = personRepository.findById(nickName);
@@ -61,6 +80,13 @@ public class PersonService {
 
     //PUT
 
+    /**
+     * Permite modificar una persona
+     * @param nickName el nickName de la persona a modificar
+     * @param person la persona con los campos actualizados
+     * @return la persona que ha mandado el cliente
+     * @throws PersonNotFoundException si el cliente manda un nickname no existente
+     */
     public Person updatePerson(String nickName, PersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
@@ -79,6 +105,13 @@ public class PersonService {
 
     //PATCH
 
+    /**
+     * Permite modificar la dirección de correo electrónico
+     * @param nickName El nickname de la persona a modificar
+     * @param person La persona con la dirección de correo electrónico modificada
+     * @return La persona con todos los campos, además del su dirección de correo electrónico actualizada
+     * @throws PersonNotFoundException Si el cliente le manda un nickName no existente
+     */
     public Person updateEmailPerson(String nickName, UpdateEmailPersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
@@ -92,6 +125,13 @@ public class PersonService {
         return personRepository.save(personToUpdate);
     }
 
+    /**
+     * Permite modificar el número de teléfono de una persona
+     * @param nickName El nickName de la persona a modificar
+     * @param person La persona con el número de teléfono modificado
+     * @return La persona con todos los campos, además de su número de teléfono actualizado
+     * @throws PersonNotFoundException Si el cliente manda un nickname no existente
+     */
     public Person updatePhoneNumberPerson(String nickName, UpdatePhoneNumberPersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(nickName);
 
