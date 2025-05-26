@@ -14,15 +14,12 @@ import lombok.NonNull;
 public class PersonDTO {
 
     @NotBlank(message = "el nombre completo no puede ser nulo")
-    @NonNull
     private String name;
 
 
     @Digits(integer = 9, fraction = 0, message = "El número de teléfono debe tener 9 dígitos")
-    @NonNull
     private int phoneNumber;
 
-    @NonNull
     @Pattern(regexp = "^[a-zA-Z0-9]+@gmail\\.com$", message = "El correo electrónico solo puede contener letras y números antes de '@gmail.com'")
     private String email;
 }

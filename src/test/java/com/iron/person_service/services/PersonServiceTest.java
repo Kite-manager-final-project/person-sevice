@@ -1,8 +1,7 @@
 package com.iron.person_service.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iron.person_service.dtos.UpdateEmailPersonDTO;
-import com.iron.person_service.dtos.UpdatePhoneNumberPersonDTO;
+import com.iron.person_service.dtos.*;
 import com.iron.person_service.models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -186,8 +185,38 @@ class PersonServiceTest {
 
     }
 
+    //PUT
 
+    @Test
+    @DisplayName("Modificar una persona por completo")
+    @Transactional
+    void updatePerson() throws Exception {
+        PersonDTO request = new PersonDTO("Salva Gurrucharri", 657631245, "salvador@gmail.com");
 
+        String requestBody = objectMapper.writeValueAsString(request);
 
+        mockMvc.perform(put("/api/person/developer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(request.getName()))
+                .andExpect(jsonPath("$.phoneNumber").value(request.getPhoneNumber()))
+                .andExpect(jsonPath("$.email").value(request.getEmail()));
+    }
+
+    @Test
+    @DisplayName("Modificar una persona no existente")
+    void updateUnexistingPerson() throws Exception {
+        PersonDTO request = new PersonDTO("Javier Perez", 691452397, "javiperez@gmail.com");
+
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(put("/api/person/fernan")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("La persona que intentas modificar no existe en la base de datos"));
+
+    }
 
 }
