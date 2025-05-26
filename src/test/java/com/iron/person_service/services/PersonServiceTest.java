@@ -127,6 +127,41 @@ class PersonServiceTest {
                 .andExpect(jsonPath("$.phoneNumber").value(newPhoneNumber));
     }
 
+    @Test
+    @DisplayName("Intentar actualizar email de una persona inexistente")
+    void updateEmailNonExistingPerson() throws Exception {
+
+        String newEmail = "florentino@gmail.com";
+
+        UpdateEmailPersonDTO request = new UpdateEmailPersonDTO(newEmail);
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(patch("/api/person/updateEmail/florentino")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("La persona que intentas modificar no existe en la base de datos"));
+    }
+
+    @Test
+    @DisplayName("Intentar modificar el número de teléfono de una persona inexistente")
+    void updateTelephoneNonExistingPerson() throws Exception {
+
+        int newPhoneNumber = 614569873;
+
+        UpdatePhoneNumberPersonDTO request = new UpdatePhoneNumberPersonDTO(newPhoneNumber);
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(patch("/api/person/updatePhoneNumber/florentino")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("La persona que intentas modificar no existe en la base de datos"));
+
+    }
+
+
+
 
 
 
