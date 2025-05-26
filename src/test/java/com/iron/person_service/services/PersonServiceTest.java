@@ -161,6 +161,30 @@ class PersonServiceTest {
     }
 
 
+    //DELETE
+
+    @Test
+    @DisplayName("Eliminar a una persona de la base de datos")
+    @Transactional
+    void deletePerson() throws Exception {
+
+        mockMvc.perform(delete("/api/person/tester")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Esa persona ha sido eliminada correctamente"));
+
+    }
+
+    @Test
+    @DisplayName("Eliminar a una persona que no existe en la base de datos")
+    void deleteNonExistingPerson() throws Exception {
+
+        mockMvc.perform(delete("/api/person/florentino")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("La persona que intentas eliminar no existe"));
+
+    }
 
 
 
