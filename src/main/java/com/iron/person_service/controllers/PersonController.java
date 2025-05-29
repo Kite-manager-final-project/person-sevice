@@ -1,8 +1,10 @@
 package com.iron.person_service.controllers;
 
 import com.iron.person_service.dtos.PersonDTO;
+import com.iron.person_service.dtos.PostPersonDTO;
 import com.iron.person_service.dtos.UpdateEmailPersonDTO;
 import com.iron.person_service.dtos.UpdatePhoneNumberPersonDTO;
+import com.iron.person_service.exceptions.FormatException;
 import com.iron.person_service.exceptions.PersonExistException;
 import com.iron.person_service.exceptions.PersonNotFoundException;
 import com.iron.person_service.models.Person;
@@ -44,12 +46,15 @@ public class PersonController {
     //POST
 
     @PostMapping
-    public ResponseEntity<?> savePerson(@Valid @RequestBody Person person){
+    public ResponseEntity<?> savePerson(@Valid @RequestBody PostPersonDTO person){
         try {
             return ResponseEntity.ok(personService.savePerson(person));
         }catch (PersonExistException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", e.getMessage(), "status", 409));
+        }catch (FormatException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", e.getMessage(), "status", 400));
         }
     }
 
@@ -62,6 +67,9 @@ public class PersonController {
         }catch (PersonNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", e.getMessage(), "status", 404));
+        }catch (FormatException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", e.getMessage(), "status", 400));
         }
     }
 
@@ -84,6 +92,9 @@ public class PersonController {
         }catch (PersonNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", e.getMessage(), "status", 404));
+        }catch (FormatException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", e.getMessage(), "status", 400));
         }
     }
 

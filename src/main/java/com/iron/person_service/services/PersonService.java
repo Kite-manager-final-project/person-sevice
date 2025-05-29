@@ -1,8 +1,10 @@
 package com.iron.person_service.services;
 
 import com.iron.person_service.dtos.PersonDTO;
+import com.iron.person_service.dtos.PostPersonDTO;
 import com.iron.person_service.dtos.UpdateEmailPersonDTO;
 import com.iron.person_service.dtos.UpdatePhoneNumberPersonDTO;
+import com.iron.person_service.exceptions.FormatException;
 import com.iron.person_service.exceptions.PersonExistException;
 import com.iron.person_service.exceptions.PersonNotFoundException;
 import com.iron.person_service.models.Person;
@@ -10,6 +12,7 @@ import com.iron.person_service.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,13 +51,22 @@ public class PersonService {
      * @return la persona que ha mandado el cliente
      * @throws PersonExistException si el cliente manda una persona con un nickName ya existente
      */
-    public Person savePerson(Person person){
+    public Person savePerson(PostPersonDTO person){
         Optional<Person> foundPerson = personRepository.findById(person.getNickName());
 
         if (foundPerson.isPresent())
             throw new PersonExistException("Ese usuario ya existe en la base de datos");
 
-        return personRepository.save(person);
+        try {
+            Integer phoneNumber = Integer.parseInt(person.getPhoneNumber());
+
+            Person savedPerson = new Person(person.getNickName(), person.getName(), phoneNumber, person.getEmail());
+
+            return personRepository.save(savedPerson);
+        }catch (NumberFormatException e){
+            throw new FormatException("El número de teléfono que has pasado tiene carácteres no validos");
+        }
+
 
     }
 
@@ -90,13 +102,17 @@ public class PersonService {
         if (foundPerson.isEmpty())
             throw new PersonNotFoundException("La persona que intentas modificar no existe en la base de datos");
 
-        Person personToUpdate = foundPerson.get();
+        try {
+            Person personToUpdate = foundPerson.get();
 
-        personToUpdate.setEmail(person.getEmail());
-        personToUpdate.setName(person.getName());
-        personToUpdate.setPhoneNumber(person.getPhoneNumber());
+            personToUpdate.setEmail(person.getEmail());
+            personToUpdate.setName(person.getName());
+            personToUpdate.setPhoneNumber(Integer.parseInt(person.getPhoneNumber()));
 
-        return personRepository.save(personToUpdate);
+            return personRepository.save(personToUpdate);
+        }catch (NumberFormatException e){
+            throw new FormatException("El número de teléfono que has pasado tiene carácteres no validos");
+        }
 
     }
 
@@ -135,11 +151,16 @@ public class PersonService {
         if (foundPerson.isEmpty())
             throw new PersonNotFoundException("La persona que intentas modificar no existe en la base de datos");
 
-        Person personToUpdate = foundPerson.get();
+        try {
+            Person personToUpdate = foundPerson.get();
 
-        personToUpdate.setPhoneNumber(person.getPhoneNumber());
+            personToUpdate.setPhoneNumber(Integer.parseInt(person.getPhoneNumber()));
 
-        return personRepository.save(personToUpdate);
+            return personRepository.save(personToUpdate);
+        }catch (NumberFormatException e){
+            throw new FormatException("El número de teléfono que has pasado tiene carácteres no validos");
+        }
+
 
     }
 }
