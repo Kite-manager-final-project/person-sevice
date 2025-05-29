@@ -114,7 +114,7 @@ class PersonServiceTest {
     @Transactional
     void updatePhoneNumber() throws Exception {
 
-        int newPhoneNumber = 987654321;
+        String newPhoneNumber = "987654321";
 
         UpdatePhoneNumberPersonDTO request = new UpdatePhoneNumberPersonDTO(newPhoneNumber);
         String requestBody = objectMapper.writeValueAsString(request);
@@ -146,7 +146,7 @@ class PersonServiceTest {
     @DisplayName("Intentar modificar el número de teléfono de una persona inexistente")
     void updateTelephoneNonExistingPerson() throws Exception {
 
-        int newPhoneNumber = 614569873;
+        String newPhoneNumber = "614569873";
 
         UpdatePhoneNumberPersonDTO request = new UpdatePhoneNumberPersonDTO(newPhoneNumber);
         String requestBody = objectMapper.writeValueAsString(request);
@@ -191,7 +191,7 @@ class PersonServiceTest {
     @DisplayName("Modificar una persona por completo")
     @Transactional
     void updatePerson() throws Exception {
-        PersonDTO request = new PersonDTO("Salva Gurrucharri", 657631245, "salvador@gmail.com");
+        PersonDTO request = new PersonDTO("Salva Gurrucharri", "657631245", "salvador@gmail.com");
 
         String requestBody = objectMapper.writeValueAsString(request);
 
@@ -207,7 +207,7 @@ class PersonServiceTest {
     @Test
     @DisplayName("Modificar una persona no existente")
     void updateUnexistingPerson() throws Exception {
-        PersonDTO request = new PersonDTO("Javier Perez", 691452397, "javiperez@gmail.com");
+        PersonDTO request = new PersonDTO("Javier Perez", "691452397", "javiperez@gmail.com");
 
         String requestBody = objectMapper.writeValueAsString(request);
 
