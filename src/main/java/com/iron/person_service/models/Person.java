@@ -28,6 +28,7 @@ public class Person {
 
 
     @Pattern(regexp = "^[a-zA-Z0-9]+@gmail\\.com$", message = "El correo electrónico solo puede contener letras y números antes de '@gmail.com'")
+    @NotBlank(message = "el email no puede ser nulo")
     private String email;
 
 }
